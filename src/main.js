@@ -1,7 +1,5 @@
 'use strict';
 
-const DAY_COUNT = 3;
-
 const createRouteTemplate = () => {
   return (
     `
@@ -594,8 +592,6 @@ const createCardTemplate = () => {
   );
 };
 
-
-
 const render = (container, template, place) => {
   container.insertAdjacentHTML(place, template);
 };
@@ -607,7 +603,7 @@ const siteFilterElement = document.querySelector(`.trip-main__trip-controls > h2
 
 render(siteRouteElement, createRouteTemplate(), `beforeend`);
 render(siteMenuElement, createSiteMenuTemplate(), `afterend`);
-render(siteFilterElement, createFilterTemplate(), `afterend`);createEditFormTemplate
+render(siteFilterElement, createFilterTemplate(), `afterend`);
 
 const taskEditForm = document.querySelector(`.trip-events`);
 render(taskEditForm, createEditFormTemplate(), `beforeend`);
