@@ -4,6 +4,6 @@ export const createRouteTemplate = () =>
     <p class="trip-info__dates">Mar 18&nbsp;&mdash;&nbsp;21</p>
   </div>
   <p class="trip-info__cost">
-    Total: &euro;&nbsp;<span class="trip-info__cost-value">1230</span>
+    Total: &euro;&nbsp;<span class="trip-info__cost-value"></span>
   </p>
 </section>`;
