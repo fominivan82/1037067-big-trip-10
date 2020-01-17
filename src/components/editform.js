@@ -1,4 +1,6 @@
-import {MAX_OFFERS, drivePoints, checkPoints, pointCities, allOffers, shuffleArray, MAX_DESCRIPTIONS, allDescriptions, now, quantityPhotos} from '../mock/editformmock.js';
+import {drivePoints, checkPoints, pointCities, shuffleArray, MAX_DESCRIPTIONS, allDescriptions, quantityPhotos, formatTime} from '../mock/editformmock.js';
+import {getPointEditForm} from './../mock/cardmock.js';
+import {createElement} from '../utils.js';
 
 const createOffers = (offers) => {
   return offers
@@ -39,11 +41,11 @@ const createPhotos = (photos) => {
     .join(`\n`);
 };
 
-const createTime = (time) => {
-  return (
-    `${time}`
-  );
-};
+// const createTime = (time) => {
+//   return (
+//     `${time}`
+//   );
+// };
 
 const createCities = (cities) => {
   return cities
@@ -77,107 +79,112 @@ const createPointTypes = (points) => {
     .join(`\n`);
 };
 
-export const createEditFormTemplate = () => {
+const createEditFormTemplate = (offer) => {
+
+  const {type, value, startDate, endDate, startTime, endTime, offers, price, to} = offer;
 
   const drivePoint = createPointTypes(drivePoints);
   const checkPoint = createPointTypes(checkPoints);
   const pointCiti = createCities(pointCities);
   const urlPhoto = createPhotos(quantityPhotos);
   const insertDescription = createDescriptions(shuffleArray(allDescriptions, MAX_DESCRIPTIONS));
-  const showTime = createTime(now);
-  const insertOffers = createOffers(shuffleArray(allOffers, MAX_OFFERS));
+  // const showTime = createTime(now);
+  const insertOffers = createOffers(offers);
+  const insertgetPoint = getPointEditForm(type, to);
+  const insertStartDate = formatTime(startDate, startTime);
+  const insertEndDate = formatTime(endDate, endTime);
+
   return (
-    `<form class="trip-events__trip-sort  trip-sort" action="#" method="get">
-      <span class="trip-sort__item  trip-sort__item--day">Day</span>
-      <div class="trip-sort__item  trip-sort__item--event">
-        <input id="sort-event" class="trip-sort__input  visually-hidden" type="radio" name="trip-sort" value="sort-event" checked>
-        <label class="trip-sort__btn" for="sort-event">Event</label>
-      </div>
-      <div class="trip-sort__item  trip-sort__item--time">
-        <input id="sort-time" class="trip-sort__input  visually-hidden" type="radio" name="trip-sort" value="sort-time">
-        <label class="trip-sort__btn" for="sort-time">
-          Time
-          <svg class="trip-sort__direction-icon" width="8" height="10" viewBox="0 0 8 10">
-            <path d="M2.888 4.852V9.694H5.588V4.852L7.91 5.068L4.238 0.00999987L0.548 5.068L2.888 4.852Z"/>
-          </svg>
-        </label>
-      </div>
-      <div class="trip-sort__item  trip-sort__item--price">
-        <input id="sort-price" class="trip-sort__input  visually-hidden" type="radio" name="trip-sort" value="sort-price">
-        <label class="trip-sort__btn" for="sort-price">
-          Price
-          <svg class="trip-sort__direction-icon" width="8" height="10" viewBox="0 0 8 10">
-            <path d="M2.888 4.852V9.694H5.588V4.852L7.91 5.068L4.238 0.00999987L0.548 5.068L2.888 4.852Z"/>
-          </svg>
-        </label>
-      </div>
-      <span class="trip-sort__item  trip-sort__item--offers">Offers</span>
-    </form>
-    <form class="trip-events__item  event  event--edit" action="#" method="post">
-      <header class="event__header">
-        <div class="event__type-wrapper">
-          <label class="event__type  event__type-btn" for="event-type-toggle-1">
-            <span class="visually-hidden">Choose event type</span>
-            <img class="event__type-icon" width="17" height="17" src="img/icons/flight.png" alt="Event type icon">
-          </label>
-          <input class="event__type-toggle  visually-hidden" id="event-type-toggle-1" type="checkbox">
-          <div class="event__type-list">
-            <fieldset class="event__type-group">
-              <legend class="visually-hidden">Transfer</legend>
-              ${drivePoint}
-            </fieldset>
-            <fieldset class="event__type-group">
-              <legend class="visually-hidden">Activity</legend>
-              ${checkPoint}
-            </fieldset>
-          </div>
-        </div>
-        <div class="event__field-group  event__field-group--destination">
-          <label class="event__label  event__type-output" for="event-destination-1">
-            Sightseeing at
-          </label>
-          <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="Geneva" list="destination-list-1">
-          <datalist id="destination-list-1">
-          ${pointCiti}
-          </datalist>
-        </div>
-        <div class="event__field-group  event__field-group--time">
-          <label class="visually-hidden" for="event-start-time-1">
-            From
-          </label>
-          <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${showTime}">
-          &mdash;
-          <label class="visually-hidden" for="event-end-time-1">
-            To
-          </label>
-          <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${showTime}">
-        </div>
-        <div class="event__field-group  event__field-group--price">
-          <label class="event__label" for="event-price-1">
-            <span class="visually-hidden">Price</span>
-            &euro;
-          </label>
-          <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="">
-        </div>
-        <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
-        <button class="event__reset-btn" type="reset">Cancel</button>
-      </header>
-      <section class="event__details">
-        <section class="event__section  event__section--offers">
-          <h3 class="event__section-title  event__section-title--offers">Offers</h3>
-          <div class="event__available-offers">
-          ${insertOffers}
-          </div>
-        </section>
-        <section class="event__section  event__section--destination">
-          <h3 class="event__section-title  event__section-title--destination">Destination</h3>
-          <p class="event__destination-description">${insertDescription}</p>
-          <div class="event__photos-container">
-            <div class="event__photos-tape">
-            ${urlPhoto}
+    `<div>
+      <form class="trip-events__item  event  event--edit" action="#" method="post">
+        <header class="event__header">
+          <div class="event__type-wrapper">
+            <label class="event__type  event__type-btn" for="event-type-toggle-1">
+              <span class="visually-hidden">Choose event type</span>
+              <img class="event__type-icon" width="17" height="17" src="img/icons/${type}.png" alt="Event type icon">
+            </label>
+            <input class="event__type-toggle  visually-hidden" id="event-type-toggle-1" type="checkbox">
+            <div class="event__type-list">
+              <fieldset class="event__type-group">
+                <legend class="visually-hidden">Transfer</legend>
+                ${drivePoint}
+              </fieldset>
+              <fieldset class="event__type-group">
+                <legend class="visually-hidden">Activity</legend>
+                ${checkPoint}
+              </fieldset>
             </div>
           </div>
+          <div class="event__field-group  event__field-group--destination">
+            <label class="event__label  event__type-output" for="event-destination-1">
+            ${insertgetPoint}
+            </label>
+            <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${value}" list="destination-list-1">
+            <datalist id="destination-list-1">
+            ${pointCiti}
+            </datalist>
+          </div>
+          <div class="event__field-group  event__field-group--time">
+            <label class="visually-hidden" for="event-start-time-1">
+              From
+            </label>
+            <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${insertStartDate}">
+            &mdash;
+            <label class="visually-hidden" for="event-end-time-1">
+              To
+            </label>
+            <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${insertEndDate}">
+          </div>
+          <div class="event__field-group  event__field-group--price">
+            <label class="event__label" for="event-price-1">
+              <span class="visually-hidden">Price</span>
+              &euro;
+            </label>
+            <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="${price}">
+          </div>
+          <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
+          <button class="event__reset-btn" type="reset">Cancel</button>
+        </header>
+        <section class="event__details">
+          <section class="event__section  event__section--offers">
+            <h3 class="event__section-title  event__section-title--offers">Offers</h3>
+            <div class="event__available-offers">
+            ${insertOffers}
+            </div>
+          </section>
+          <section class="event__section  event__section--destination">
+            <h3 class="event__section-title  event__section-title--destination">Destination</h3>
+            <p class="event__destination-description">${insertDescription}</p>
+            <div class="event__photos-container">
+              <div class="event__photos-tape">
+              ${urlPhoto}
+              </div>
+            </div>
+          </section>
         </section>
-      </section>
-    </form>`);
+      </form>
+    </div>`);
 };
+
+export default class EditForm {
+  constructor(arr) {
+    this._arr = arr;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createEditFormTemplate(this._arr);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}

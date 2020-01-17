@@ -29,6 +29,12 @@ export const getRandom = (min, max) => {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 };
 
+// функция изменения формата времени
+
+export const formatTime = (date, time) => {
+  let editFormTime = (date.getDate() + `/` + (date.getMonth() + 1) + `/` + (date.getFullYear() - 1) + ` ` + time);
+  return editFormTime;
+};
 // 2 функции случайного перемешивания массива
 export const getShuffle = (array) => {
   return array.sort(() => Math.random() - 0.5);
@@ -40,5 +46,5 @@ export const shuffleArray = (arr, quantity) => {
     .slice(ZERO, quantity);
 };
 
-// функция случайного случайного создания массива
+// функция случайного создания массива
 export const quantityPhotos = new Array(getRandom(ZERO, QUANTITY_PHOTOS)).fill(``);
