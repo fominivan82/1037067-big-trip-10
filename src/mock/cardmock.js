@@ -1,4 +1,4 @@
-import {drivePoints, checkPoints, pointCities, getRandom, shuffleArray} from './editformmock.js';
+import {allOffers, drivePoints, checkPoints, pointCities, getRandom, shuffleArray} from './editformmock.js';
 
 const MAX_PRICE = 600;
 
@@ -18,18 +18,38 @@ const getRandomTime = (funchour, funcminutes) => {
   return time;
 };
 
+// функция правильного написания точек маршрута
+
+export const getPoint = (type, to, value) => {
+  let time = ((`check-in` === type || `sightseeing` === type || `restaurant` === type ? `${type}` : `${type}${to}${value}`));
+  return time;
+};
+
+export const getPointEditForm = (type, to) => {
+  let time = ((`check-in` === type || `sightseeing` === type || `restaurant` === type ? `${type}` : `${type}${to}`));
+  return time;
+};
+// функция правильного написания точек маршрута и гордов для карточки редактирования
+
+export const getPointCities = (point) => {
+  let time = ((`check-in` === point || `sightseeing` === point || `restaurant` === point ? ` ` : shuffleArray(pointCities, 1)));
+  return time;
+};
+
 // собираем массивы и функцию для строки в дне
 let allPoints = drivePoints.concat(checkPoints);
-let objPoints = [` ride to ` + shuffleArray(pointCities, 1), ` to ` + shuffleArray(pointCities, 1), ` to ` + shuffleArray(pointCities, 1), ` to ` + shuffleArray(pointCities, 1), ` to ` + shuffleArray(pointCities, 1), ` ride to ` + shuffleArray(pointCities, 1), ` ride to ` + shuffleArray(pointCities, 1), `Natural History Museum`, `tasting the local cuisine`, `Check into hotel`];
 
-export let allObjPoints = allPoints.map((v, i) => ({
-  type: v,
-  value: objPoints[i],
+
+export let allObjPoints = allPoints.map((point) => ({
+  type: point,
+  to: ` to `,
+  value: getPointCities(point),
   startDate: getRandomDate(),
   endDate: getRandomDate(),
   startTime: getRandomTime(getRandom(0, 23), getRandom(0, 59)),
   endTime: getRandomTime(getRandom(0, 23), getRandom(0, 59)),
-  price: getRandom(0, MAX_PRICE)
+  price: getRandom(0, MAX_PRICE),
+  offers: shuffleArray(allOffers, getRandom(0, 3))
 }));
 
 // функция количества затраченного времени и нужное форматирование
@@ -46,4 +66,5 @@ export const sumTime = (startTime, endTime) => {
   } else {
     time = time + `M`;
   }
+  return time;
 };
