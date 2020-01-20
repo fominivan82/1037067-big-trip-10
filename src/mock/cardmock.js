@@ -49,7 +49,8 @@ export let allObjPoints = allPoints.map((point) => ({
   startTime: getRandomTime(getRandom(0, 23), getRandom(0, 59)),
   endTime: getRandomTime(getRandom(0, 23), getRandom(0, 59)),
   price: getRandom(0, MAX_PRICE),
-  offers: shuffleArray(allOffers, getRandom(0, 3))
+  offers: shuffleArray(allOffers, getRandom(0, 3)),
+  isArchive: 0 // временно для испытания заглушки  1, пока не сделал календарь)
 }));
 
 // функция количества затраченного времени и нужное форматирование
