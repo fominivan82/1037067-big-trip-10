@@ -1,6 +1,5 @@
+import AbstractComponent from './abstract.js';
 import {sumTime, getPoint} from './../mock/cardmock.js';
-import {createElement} from '../utils.js';
-
 
 const createCardOffers = (offers) => {
   return offers
@@ -53,25 +52,18 @@ const createCard = (offer) => {
   );
 };
 
-export default class Card {
+export default class Card extends AbstractComponent {
   constructor(arr) {
+    super();
     this._arr = arr;
-    this._element = null;
   }
 
   getTemplate() {
     return createCard(this._arr);
   }
 
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
+  setEditButtonClickHandler(handler) {
+    this.getElement().querySelector(`.event__rollup-btn`)
+      .addEventListener(`click`, handler);
   }
 }

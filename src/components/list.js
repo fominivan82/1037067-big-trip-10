@@ -1,4 +1,4 @@
-import {createElement} from '../utils.js';
+import AbstractComponent from './abstract.js';
 
 const createListTemplate = () =>
   `<ul class="trip-days">
@@ -28,24 +28,9 @@ const createListTemplate = () =>
     </li>
   </ul>`;
 
-export default class List {
-  constructor() {
-    this._element = null;
-  }
+export default class List extends AbstractComponent {
 
   getTemplate() {
     return createListTemplate();
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }
