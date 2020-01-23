@@ -5,9 +5,10 @@ import {RenderPosition, render, renderIns} from './utils/render.js';
 import TripController from './controllers/tripController.js';
 import {allObjPoints} from './mock/cardmock.js';
 
-const siteMenuElement = document.querySelector(`.trip-main__trip-controls > h2:nth-child(1)`);
+const siteMenuElement = document.querySelector(`.trip-main__trip-controls`);
+const siteFilterElement = document.querySelector(`.trip-main__trip-controls > h2:nth-child(2)`);
 
-render(siteMenuElement, new SiteMenu(), RenderPosition.BEFOREEND);
+renderIns(siteMenuElement, new SiteMenu(), siteFilterElement);
 renderIns(siteMenuElement, new Filter(), null);
 
 const taskEditForm = document.querySelector(`.trip-events`);
