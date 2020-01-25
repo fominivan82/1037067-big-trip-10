@@ -1,5 +1,5 @@
 import AbstractComponent from './abstract.js';
-import {sumTime, getPoint} from './../mock/cardmock.js';
+import {getPoint} from './../mock/cardmock.js';
 
 const createCardOffers = (offers) => {
   return offers
@@ -18,9 +18,8 @@ const createCardOffers = (offers) => {
 
 const createCard = (offer) => {
 
-  const {type, value, startDate, endDate, startTime, endTime, price, offers, to} = offer;
+  const {type, value, startDate, endDate, startTime, endTime, price, offers, to, timeValue} = offer;
   const insertCardOffers = createCardOffers(offers);
-  const insertCardTime = sumTime(startTime, endTime);
   const insertgetPoint = getPoint(type, to, value);
   return (
     `<li class="trip-events__item">
@@ -35,7 +34,7 @@ const createCard = (offer) => {
           &mdash;
           <time class="event__end-time" datetime="${endDate}${endTime}">${endTime}</time>
         </p>
-        <p class="event__duration">${insertCardTime}</p>
+        <p class="event__duration">${timeValue}</p>
       </div>
       <p class="event__price">
         &euro;&nbsp;<span class="event__price-value">${price}</span>

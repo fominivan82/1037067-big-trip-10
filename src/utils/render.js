@@ -36,3 +36,9 @@ export const replace = (newComponent, oldComponent) => {
     parentElement.replaceChild(newElement, oldElement);
   }
 };
+
+export const delElements = (array) => {
+  array.forEach(function (arr) {
+    arr.remove();
+  });
+};

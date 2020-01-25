@@ -14,7 +14,7 @@ renderIns(siteMenuElement, new Filter(), null);
 const taskEditForm = document.querySelector(`.trip-events`);
 const tripController = new TripController(taskEditForm);
 
-tripController.render(allObjPoints);
+tripController.renderMain(allObjPoints);
 
 // вставляем итоговую сумму путешествия
 const sumCost = document.querySelectorAll(`.event__price-value`);

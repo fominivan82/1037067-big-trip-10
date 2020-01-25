@@ -1,11 +1,11 @@
 import EditForm from '../components/editform.js';
 import Card from '../components/card.js';
-import {RenderPosition, render, replace, renderIns} from '../utils/render.js';
+import {RenderPosition, render, replace, renderIns, delElements} from '../utils/render.js';
 import Route from '../components/route.js';
-import SortForm from '../components/sortform.js';
+import SortForm, {SortType} from '../components/sortform.js';
 import List from '../components/list.js';
 import NoPoints from '../components/no-points.js';
-import {getShuffle} from '../mock/editformmock.js';
+import {createArr} from '../mock/cardmock.js';
 
 // функция отрисовки карточк и формы
 const renderCard = (arr, cardElement) => {
@@ -52,7 +52,7 @@ export default class TripController {
     this._route = new Route();
   }
 
-  render(cards) {
+  renderMain(cards) {
 
     const container = this._container;
     const isAllTasksArchived = cards.every((task) => task.isArchive);
@@ -69,13 +69,47 @@ export default class TripController {
     render(container, this._list, RenderPosition.BEFOREEND);
 
     const siteCardElements = document.querySelectorAll(`.trip-events__list`);
+    const allObj = createArr(siteCardElements, cards);
 
     // вставляем карточки в список
-    siteCardElements.forEach((cardElement) => {
-      getShuffle(cards).slice(0, 4)
-        .forEach((card) => {
-          renderCard(card, cardElement);
+
+    const renderAllObj = (cardElements, siteElements) => {
+      cardElements.forEach((cardElement, i) => {
+
+        cardElement.forEach((card) => {
+          renderCard(card, siteElements[i]);
         });
+      });
+    };
+
+    renderAllObj(allObj, siteCardElements);
+
+    this._sortForm.setSortTypeChangeHandler((sortType) => {
+      let newArray = [];
+
+      switch (sortType) {
+        case SortType.PRICE_UP:
+          newArray = [];
+          allObj.map((cardElement) => {
+            newArray.push(cardElement.slice().sort((a, b) => b.price - a.price));
+          });
+          break;
+
+        case SortType.TIME_UP:
+          newArray = [];
+          allObj.map((cardElement) => {
+            newArray.push(cardElement.slice().sort((a, b) => b.timeMinuteValue - a.timeMinuteValue));
+          });
+          break;
+        case SortType.DEFAULT:
+          newArray = allObj;
+          break;
+      }
+      const delObj = document.querySelectorAll(`.trip-events__item`);
+      delElements(delObj);
+      renderAllObj(newArray, siteCardElements);
     });
+
+
   }
 }
