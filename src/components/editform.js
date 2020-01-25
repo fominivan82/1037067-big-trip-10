@@ -1,6 +1,7 @@
+import AbstractComponent from './abstract.js';
 import {drivePoints, checkPoints, pointCities, shuffleArray, MAX_DESCRIPTIONS, allDescriptions, quantityPhotos, formatTime} from '../mock/editformmock.js';
 import {getPointEditForm} from './../mock/cardmock.js';
-import {createElement} from '../utils.js';
+
 
 const createOffers = (offers) => {
   return offers
@@ -166,25 +167,18 @@ const createEditFormTemplate = (offer) => {
     </div>`);
 };
 
-export default class EditForm {
+export default class EditForm extends AbstractComponent {
   constructor(arr) {
+    super();
     this._arr = arr;
-    this._element = null;
   }
 
   getTemplate() {
     return createEditFormTemplate(this._arr);
   }
 
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
+  setSubmitHandler(handler) {
+    this.getElement().querySelector(`form`)
+      .addEventListener(`submit`, handler);
   }
 }
