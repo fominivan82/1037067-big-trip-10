@@ -1,4 +1,4 @@
-import {allOffers, drivePoints, checkPoints, pointCities, getRandom, shuffleArray} from './editformmock.js';
+import {allOffers, drivePoints, checkPoints, pointCities, getRandom, shuffleArray, getShuffle} from './editformmock.js';
 
 const MAX_PRICE = 600;
 
@@ -50,14 +50,40 @@ export let allObjPoints = allPoints.map((point) => ({
   endTime: getRandomTime(getRandom(0, 23), getRandom(0, 59)),
   price: getRandom(0, MAX_PRICE),
   offers: shuffleArray(allOffers, getRandom(0, 3)),
-  isArchive: 0 // временно для испытания заглушки  1, пока не сделал календарь)
+  isArchive: 0, // временно для испытания заглушки  1, пока не сделал календарь)
+  timeValue: null,
+  timeMinuteValue: null
 }));
 
+
+// функция создания окончательного массива объектов
+
+export const createArr = (Elements, allCards) => {
+  let arr = [];
+  Elements.forEach(() => {
+    arr.push(getShuffle(allCards).slice(0, 4));
+  });
+  arr.forEach((arrElement) => {
+
+    arrElement.forEach((card) => {
+      card.timeValue = sumTime(card.startTime, card.endTime);
+      card.timeMinuteValue = sumMinuteTime(card.startTime, card.endTime);
+    });
+  });
+  return arr;
+};
+
 // функция количества затраченного времени и нужное форматирование
-export const sumTime = (startTime, endTime) => {
+
+export const sumMinuteTime = (startTime, endTime) => {
   const x = (+endTime.charAt(0) * 10 + +endTime.charAt(1)) * 60 + +endTime.charAt(3) * 10 + +endTime.charAt(4);
   const y = (+startTime.charAt(0) * 10 + +startTime.charAt(1)) * 60 + +startTime.charAt(3) * 10 + +startTime.charAt(4);
   let time = ((x - y) < 0 ? 1440 + (x - y) : (x - y));
+  return time;
+};
+
+export const sumTime = (startTime, endTime) => {
+  let time = sumMinuteTime(startTime, endTime);
 
   const h = Math.trunc(time / 60);
   if (h) {
